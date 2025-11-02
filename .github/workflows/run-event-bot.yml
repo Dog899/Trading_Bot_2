@@ -30,15 +30,15 @@ jobs:
           echo "First 20 lines of event_swing_bot.rb:"
           sed -n '1,20p' event_swing_bot.rb || true
 
-      - name: Run event bot
-        env:
-          SYMBOLS:        ${{ inputs.SYMBOLS }}
-          LOOKBACK_HOURS: ${{ inputs.LOOKBACK_HOURS }}
-          NEWS_LANG:      ${{ inputs.NEWS_LANG }}
-          NEWS_REGION:    ${{ inputs.NEWS_REGION }}
-        run: |
-          ruby -v
-          ruby event_swing_bot.rb
+- name: Run event bot
+  env:
+    SYMBOLS:        ${{ inputs.SYMBOLS }}
+    LOOKBACK_HOURS: ${{ inputs.LOOKBACK_HOURS }}
+    NEWS_LANG:      ${{ inputs.NEWS_LANG }}
+    NEWS_REGION:    ${{ inputs.NEWS_REGION }}
+  run: |
+    ruby -v
+    ruby .github/workflows/event_swing_bot.rb
 
       - name: Upload signals
         uses: actions/upload-artifact@v4
