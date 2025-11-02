@@ -1,0 +1,36 @@
+name: Event Swing Bot (No CSV)
+on:
+  workflow_dispatch:
+    inputs:
+      SYMBOLS:
+        description: "Tickers (comma-separated)"
+        default: "NVDA,META,TSM,FCX,MA"
+      LOOKBACK_HOURS:
+        default: "12"
+      NEWS_LANG:
+        default: "en-US"
+      NEWS_REGION:
+        default: "US"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+      - name: Run event bot
+        env:
+          SYMBOLS:        ${{ inputs.SYMBOLS }}
+          LOOKBACK_HOURS: ${{ inputs.LOOKBACK_HOURS }}
+          NEWS_LANG:      ${{ inputs.NEWS_LANG }}
+          NEWS_REGION:    ${{ inputs.NEWS_REGION }}
+        run: |
+          ruby -v
+          ruby event_swing_bot.rb
+      - name: Upload signals
+        uses: actions/upload-artifact@v4
+        with:
+          name: signals
+          path: results/signals.json
